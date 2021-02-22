@@ -32,7 +32,7 @@ const store = "Target";
 let firstRun = new Set();
 let urlOpened = false;
 export default async function target(url, interval, key, zip_code) {
-	let res = undefined,
+	let response = undefined,
 		html = undefined,
 		proxy = undefined;
 
@@ -58,18 +58,18 @@ export default async function target(url, interval, key, zip_code) {
 			};
 
 		// Get Page
-		res = await axios.get(url, options).catch(async function (error) {
+		response = await axios.get(url, options).catch(async function (error) {
 			writeErrorToFile(store, error);
 		});
 
 		// Extract Information
-		if (res && res.status == 200) {
-			html = res.data;
+		if (response && response.status == 200) {
+			html = response.data;
 
 			let parser = new DomParser();
-			let doc = parser.parseFromString(html, "text/html");
+			let document = parser.parseFromString(html, "text/html");
 			let productInfo = JSON.parse(
-				doc
+				document
 					.getElementsByTagName("script")
 					.find((script) => script.getAttribute("type") == "application/ld+json").textContent
 			);
@@ -82,7 +82,7 @@ export default async function target(url, interval, key, zip_code) {
 					"https://api.target.com/shipt_deliveries/v1/stores?zip=" + zip_code + "&key=" + key,
 					options
 				)
-				.then((res) => res.data)
+				.then((result) => result.data)
 				.then((data) => data.closest_eligible_store.location_id)
 				.catch((error) =>
 					console.error(moment().format("LTS") + ": Error while fetching data for " + title)
@@ -106,7 +106,7 @@ export default async function target(url, interval, key, zip_code) {
 						location_id,
 					options
 				)
-				.then((res) => res.data)
+				.then((result) => result.data)
 				.then((data) => data.data.product.fulfillment)
 				.catch((error) =>
 					console.error(moment().format("LTS") + ": Error while fetching data for " + title)
@@ -164,6 +164,6 @@ export default async function target(url, interval, key, zip_code) {
 			);
 		}
 	} catch (error) {
-		writeErrorToFile(store, error, html, res.status);
+		writeErrorToFile(store, error, html, response.status);
 	}
 }

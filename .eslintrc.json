@@ -62,6 +62,7 @@
 		"unicorn/prefer-string-trim-start-end": "error",
 		"unicorn/prefer-ternary": "off",
 		"unicorn/prefer-type-error": "error",
-		"unicorn/throw-new-error": "error"
+		"unicorn/throw-new-error": "error",
+		"unicorn/prevent-abbreviations": "error"
 	}
 }

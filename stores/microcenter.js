@@ -24,7 +24,7 @@ const store = "Microcenter";
 let firstRun = new Set();
 let urlOpened = false;
 export default async function microcenter(url, interval) {
-	let res = undefined,
+	let response = undefined,
 		html = undefined,
 		proxy = undefined;
 
@@ -49,18 +49,18 @@ export default async function microcenter(url, interval) {
 			};
 
 		// Get Page
-		res = await axios.get(url, options).catch(async function (error) {
+		response = await axios.get(url, options).catch(async function (error) {
 			writeErrorToFile(store, error);
 		});
 
 		// Extract Information
-		if (res && res.status == 200) {
-			html = res.data;
+		if (response && response.status == 200) {
+			html = response.data;
 
 			let parser = new DomParser();
-			let doc = parser.parseFromString(html, "text/html");
-			let title = doc.getElementsByClassName("ProductLink_" + productID);
-			let image = doc
+			let document = parser.parseFromString(html, "text/html");
+			let title = document.getElementsByClassName("ProductLink_" + productID);
+			let image = document
 				.getElementsByTagName("meta")
 				.find((meta) => meta.getAttribute("property") == "og:image")
 				.getAttribute("content");
@@ -93,6 +93,6 @@ export default async function microcenter(url, interval) {
 			}
 		}
 	} catch (error) {
-		writeErrorToFile(store, error, html, res.status);
+		writeErrorToFile(store, error, html, response.status);
 	}
 }

@@ -29,7 +29,7 @@ export default async function tesco(url, interval) {
 	if (url.includes("tescopreorders")) tescoPS5Preorder(url, interval);
 	else {
 		try {
-			let res = await axios.get(url).catch(async function (error) {
+			let response = await axios.get(url).catch(async function (error) {
 				if (error.response.status == 503)
 					console.error(
 						moment().format("LTS") +
@@ -40,16 +40,17 @@ export default async function tesco(url, interval) {
 				else writeErrorToFile(store, error);
 			});
 
-			if (res && res.status == 200) {
+			if (response && response.status == 200) {
 				let parser = new DomParser();
-				let doc = parser.parseFromString(res.data, "text/html");
-				let title = doc
+				let document = parser.parseFromString(response.data, "text/html");
+				let title = document
 					.getElementsByClassName("product-details-tile__title")[0]
 					.innerHTML.trim()
 					.slice(0, 150);
-				let inventory = doc.getElementsByClassName("button small add-control button-secondary")[0]
-					.innerHTML;
-				let image = doc
+				let inventory = document.getElementsByClassName(
+					"button small add-control button-secondary"
+				)[0].innerHTML;
+				let image = document
 					.getElementsByClassName("product-image product-image-visible")[0]
 					.getAttribute("src");
 
@@ -89,7 +90,7 @@ async function tescoPS5Preorder(url, interval) {
 
 	url = url.replace("www.", "");
 	try {
-		let res = await axios
+		let response = await axios
 			.get(url, {
 				headers: {
 					"User-Agent": USER_AGENTS[Math.floor(Math.random() * USER_AGENTS.length)],
@@ -99,9 +100,9 @@ async function tescoPS5Preorder(url, interval) {
 				writeErrorToFile(store, error);
 			});
 
-		if (res && res.status == 200) {
+		if (response && response.status == 200) {
 			let ps5PreorderPage = fs.readFileSync(ps5PreorderPagePath, "utf-8");
-			if (res.data.includes(ps5PreorderPage) && !firstRun.has(url)) {
+			if (response.data.includes(ps5PreorderPage) && !firstRun.has(url)) {
 				console.info(
 					moment().format("LTS") +
 						': "PlayStation 5" not in stock at ' +
@@ -112,7 +113,7 @@ async function tescoPS5Preorder(url, interval) {
 					interval.unit
 				);
 				firstRun.add(url);
-			} else if (!res.data.includes(ps5PreorderPage)) {
+			} else if (!response.data.includes(ps5PreorderPage)) {
 				if (ALARM) threeBeeps();
 				if (!urlOpened) {
 					if (OPEN_URL) open(url);

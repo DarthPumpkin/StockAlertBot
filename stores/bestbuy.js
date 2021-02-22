@@ -24,7 +24,7 @@ let firstRun = new Set();
 let urlOpened = false;
 export default async function bestbuy(url, interval) {
 	try {
-		let res = await axios.get(url).catch(async function (error) {
+		let response = await axios.get(url).catch(async function (error) {
 			if (error.response.status == 503)
 				console.error(
 					moment().format("LTS") +
@@ -35,29 +35,29 @@ export default async function bestbuy(url, interval) {
 			else writeErrorToFile(store.replace(" ", ""), error);
 		});
 
-		if (res && res.status === 200) {
+		if (response && response.status === 200) {
 			let parser = new DomParser();
-			let doc, title, inventory, open_box, image;
+			let document, title, inventory, open_box, image;
 
 			// Check package products
 			if (url.includes("combo")) {
-				doc = parser.parseFromString(res.data, "text/html");
-				inventory = doc.getElementsByClassName("add-to-cart-button");
-				title = doc.getElementsByClassName("sku-title")[0].textContent;
-				image = doc
+				document = parser.parseFromString(response.data, "text/html");
+				inventory = document.getElementsByClassName("add-to-cart-button");
+				title = document.getElementsByClassName("sku-title")[0].textContent;
+				image = document
 					.getElementsByClassName("picture-wrapper")[0]
 					.getElementsByTagName("img")[0]
 					.getAttribute("src");
 			} else {
 				// Check normal products
-				doc = parser.parseFromString(res.data, "text/html");
-				title = doc
+				document = parser.parseFromString(response.data, "text/html");
+				title = document
 					.getElementsByClassName("sku-title")[0]
 					.childNodes[0].textContent.trim()
 					.slice(0, 150);
-				inventory = doc.getElementsByClassName("add-to-cart-button");
-				open_box = doc.getElementsByClassName("open-box-option__label");
-				image = doc.getElementsByClassName("primary-image")[0].getAttribute("src");
+				inventory = document.getElementsByClassName("add-to-cart-button");
+				open_box = document.getElementsByClassName("open-box-option__label");
+				image = document.getElementsByClassName("primary-image")[0].getAttribute("src");
 			}
 
 			if (inventory.length > 0) inventory = inventory[0].textContent;

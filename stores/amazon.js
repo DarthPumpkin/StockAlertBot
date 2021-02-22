@@ -29,7 +29,7 @@ export default async function amazon(
 	urlOpened,
 	resolve
 ) {
-	let res = undefined,
+	let response = undefined,
 		html = undefined,
 		proxy = undefined;
 
@@ -63,7 +63,7 @@ export default async function amazon(
 			};
 
 		// Get Page
-		res = await axios.get(url, options).catch(async function (error) {
+		response = await axios.get(url, options).catch(async function (error) {
 			if (error.response.status == 503) {
 				console.error(
 					moment().format("LTS") +
@@ -85,8 +85,8 @@ export default async function amazon(
 		});
 
 		// Extract Information
-		if (res && res.status == 200) {
-			html = res.data;
+		if (response && response.status == 200) {
+			html = response.data;
 
 			// If bot Detected
 			if (html.includes("we just need to make sure you're not a robot")) {
@@ -104,10 +104,10 @@ export default async function amazon(
 			}
 
 			let parser = new DomParser();
-			let doc = parser.parseFromString(html, "text/html");
-			let title = doc.getElementById("productTitle").innerHTML.trim().slice(0, 150);
-			let inventory = doc.getElementById("add-to-cart-button");
-			let image = doc.getElementById("landingImage").getAttribute("data-old-hires");
+			let document = parser.parseFromString(html, "text/html");
+			let title = document.getElementById("productTitle").innerHTML.trim().slice(0, 150);
+			let inventory = document.getElementById("add-to-cart-button");
+			let image = document.getElementById("landingImage").getAttribute("data-old-hires");
 
 			if (inventory != undefined) inventory = inventory.getAttribute("value");
 			if (inventory == undefined && firstRun) {
@@ -139,6 +139,6 @@ export default async function amazon(
 				urlOpened: urlOpened,
 			});
 	} catch (error) {
-		writeErrorToFile(store, error, html, res.status);
+		writeErrorToFile(store, error, html, response.status);
 	}
 }

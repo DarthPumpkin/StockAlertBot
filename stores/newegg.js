@@ -23,7 +23,7 @@ let urlOpened = false;
 let firstRun = new Set();
 let badProxies = new Set();
 export default async function newegg(url, interval) {
-	let res = undefined,
+	let response = undefined,
 		html = undefined,
 		proxy = undefined;
 
@@ -53,13 +53,13 @@ export default async function newegg(url, interval) {
 			};
 
 		// Get Page
-		res = await axios.get(url, options).catch(async function (error) {
+		response = await axios.get(url, options).catch(async function (error) {
 			writeErrorToFile(store, error);
 		});
 
 		// Extract Information
-		if (res && res.status == 200) {
-			html = res.data;
+		if (response && response.status == 200) {
+			html = response.data;
 
 			// If bot Detected
 			if (html.includes("Are you a human?")) {
@@ -72,20 +72,20 @@ export default async function newegg(url, interval) {
 			}
 
 			let parser = new DomParser();
-			let doc, title, inventory, image;
+			let document, title, inventory, image;
 
 			// Check combo product
 			if (url.includes("ComboDealDetails")) {
-				doc = parser.parseFromString(html, "text/html");
-				title = doc.getElementsByTagName("title")[0].textContent;
-				inventory = doc.getElementsByClassName("atnPrimary");
-				image = "https:" + doc.getElementById("mainSlide_0").getAttribute("src");
+				document = parser.parseFromString(html, "text/html");
+				title = document.getElementsByTagName("title")[0].textContent;
+				inventory = document.getElementsByClassName("atnPrimary");
+				image = "https:" + document.getElementById("mainSlide_0").getAttribute("src");
 			} else {
 				// Check normal product
-				doc = parser.parseFromString(html, "text/html");
-				title = doc.getElementsByClassName("product-title")[0].innerHTML.trim().slice(0, 150);
-				inventory = doc.getElementsByClassName("btn btn-primary btn-wide");
-				image = doc.getElementsByClassName("image_url");
+				document = parser.parseFromString(html, "text/html");
+				title = document.getElementsByClassName("product-title")[0].innerHTML.trim().slice(0, 150);
+				inventory = document.getElementsByClassName("btn btn-primary btn-wide");
+				image = document.getElementsByClassName("image_url");
 				if (image.length > 0) image = image[0].textContent;
 			}
 
@@ -120,6 +120,6 @@ export default async function newegg(url, interval) {
 			}
 		}
 	} catch (error) {
-		writeErrorToFile(store, error, html, res.status);
+		writeErrorToFile(store, error, html, response.status);
 	}
 }

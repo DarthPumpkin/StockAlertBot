@@ -9,20 +9,20 @@ const require = createRequire(import.meta.url);
 console.log("Looking for .env file...");
 const fs = require("fs");
 var firstRun = true;
-function readEnvFile(firstRun) {
-	let envFile = "";
+function readEnvironmentFile(firstRun) {
+	let environmentFile = "";
 	try {
-		envFile = fs.readFileSync(".env", { encoding: "utf8", flag: "r" });
-		if (envFile == "") throw new Error(".env file empty!");
+		environmentFile = fs.readFileSync(".env", { encoding: "utf8", flag: "r" });
+		if (environmentFile == "") throw new Error(".env file empty!");
 		if (firstRun) console.log(".env file found! Attempting to read...");
 	} catch {
 		if (firstRun) console.log(".env file not found! Creating a new one...");
-		envFile = fs.readFileSync("example.env", { encoding: "utf8", flag: "r" });
-		fs.writeFileSync(".env", envFile);
+		environmentFile = fs.readFileSync("example.env", { encoding: "utf8", flag: "r" });
+		fs.writeFileSync(".env", environmentFile);
 	}
-	return envFile;
+	return environmentFile;
 }
-readEnvFile(firstRun);
+readEnvironmentFile(firstRun);
 firstRun = false;
 
 // Import stuff
@@ -56,49 +56,49 @@ console.log("Setting up routes...");
 
 // index.html: https://localhost:3250/
 app.get("/", getPage);
-function getPage(req, res) {
-	res.sendFile(path.join(path.resolve() + "/server/index.html"));
+function getPage(request, response) {
+	response.sendFile(path.join(path.resolve() + "/server/index.html"));
 }
 
 // GET .env: https://localhost:3250/env
-app.get("/env", getEnv);
-function getEnv(req, res) {
-	let envFile = readEnvFile(firstRun);
-	res.send(parse(envFile));
+app.get("/env", getEnvironment);
+function getEnvironment(request, response) {
+	let environmentFile = readEnvironmentFile(firstRun);
+	response.send(parse(environmentFile));
 }
 
 // POST .env: https://localhost:3250/env
-app.post("/env", postEnv);
-function postEnv(req, res) {
+app.post("/env", postEnvironment);
+function postEnvironment(request, response) {
 	console.log("Settings received! Saving to .env...");
-	let envSettings = stringify(req.body);
+	let environmentSettings = stringify(request.body);
 
-	fs.writeFile(".env", envSettings, "utf8", function (err) {
-		if (err) {
-			res.status(400).send({ error: "Error writing .env" });
+	fs.writeFile(".env", environmentSettings, "utf8", function (error) {
+		if (error) {
+			response.status(400).send({ error: "Error writing .env" });
 		} else {
-			res.send({ message: "Successfully saved .env" });
+			response.send({ message: "Successfully saved .env" });
 		}
 	});
 }
 
 // GET config.json: https://localhost:3250/config
 app.get("/config", getSettings);
-function getSettings(req, res) {
-	res.sendFile(path.join(path.resolve() + "/config.json"));
+function getSettings(request, response) {
+	response.sendFile(path.join(path.resolve() + "/config.json"));
 }
 
 // POST config.json: https://localhost:3250/config
 app.post("/config", postSettings);
-function postSettings(req, res) {
+function postSettings(request, response) {
 	console.log("Settings received! Saving to config.json...");
-	let settings = JSON.stringify(req.body, undefined, 4);
+	let settings = JSON.stringify(request.body, undefined, 4);
 
-	fs.writeFile("config.json", settings, "utf8", function (err) {
-		if (err) {
-			res.status(400).send({ error: "Error writing config.json" });
+	fs.writeFile("config.json", settings, "utf8", function (error) {
+		if (error) {
+			response.status(400).send({ error: "Error writing config.json" });
 		} else {
-			res.send({ message: "Successfully saved config.json" });
+			response.send({ message: "Successfully saved config.json" });
 		}
 	});
 }

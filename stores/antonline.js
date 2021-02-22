@@ -22,7 +22,7 @@ const store = "Ant Online";
 let firstRun = new Set();
 let urlOpened = false;
 export default async function antonline(url, interval) {
-	let res = undefined,
+	let response = undefined,
 		html = undefined,
 		proxy = undefined;
 
@@ -45,19 +45,19 @@ export default async function antonline(url, interval) {
 			};
 
 		// Get Page
-		res = await axios.get(url, options).catch(async function (error) {
+		response = await axios.get(url, options).catch(async function (error) {
 			writeErrorToFile(store.replace(" ", ""), error);
 		});
 
 		// Extract Information
-		if (res && res.status === 200) {
-			html = res.data;
+		if (response && response.status === 200) {
+			html = response.data;
 
 			let parser = new DomParser();
-			let doc = parser.parseFromString(html, "text/html");
-			let title = doc.getElementsByClassName("title");
-			let inventory = doc.getElementsByClassName("uk-button uk-button-primary add_to_cart");
-			let image = doc.getElementsByClassName("uk-slideshow");
+			let document = parser.parseFromString(html, "text/html");
+			let title = document.getElementsByClassName("title");
+			let inventory = document.getElementsByClassName("uk-button uk-button-primary add_to_cart");
+			let image = document.getElementsByClassName("uk-slideshow");
 
 			if (title.length > 0) title = title[0].innerHTML.slice(0, 150);
 			if (image.length > 0) {
@@ -65,7 +65,7 @@ export default async function antonline(url, interval) {
 				image = image.getElementsByTagName("img");
 				image = image[0].getAttribute("src");
 			} else {
-				image = doc.getElementsByClassName("main_img");
+				image = document.getElementsByClassName("main_img");
 				image = image.length > 0 ? image[0].getAttribute("src").replace("45", "500") : undefined;
 			}
 			if (inventory && inventory.length > 0) inventory = inventory[0].textContent;
@@ -96,6 +96,6 @@ export default async function antonline(url, interval) {
 			}
 		}
 	} catch (error) {
-		writeErrorToFile(store.replace(" ", ""), error, html, res.status);
+		writeErrorToFile(store.replace(" ", ""), error, html, response.status);
 	}
 }

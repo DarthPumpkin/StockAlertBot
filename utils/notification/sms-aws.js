@@ -32,7 +32,7 @@ export default async function sendAlertToSMSViaAWS(product_url, title, store) {
 
 			var sns = new aws.SNS();
 
-			var params = {
+			var parameters = {
 				Message: `${title} in stock at ${store}! \n\n${product_url} \n\nStockAlertBot | ${moment().format(
 					"MMM Do YYYY - h:mm:ss A"
 				)}`,
@@ -40,9 +40,9 @@ export default async function sendAlertToSMSViaAWS(product_url, title, store) {
 				PhoneNumber: "+" + service.phone,
 			};
 
-			sns.publish(params, (err) => {
-				if (err) {
-					console.error(moment().format("LTS") + ": Error sending email alert", err, err.stack);
+			sns.publish(parameters, (error) => {
+				if (error) {
+					console.error(moment().format("LTS") + ": Error sending email alert", error, error.stack);
 				}
 			});
 		}

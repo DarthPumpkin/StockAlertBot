@@ -23,7 +23,7 @@ let firstRun = new Set();
 let urlOpened = false;
 export default async function costco(url, interval) {
 	try {
-		let res = await axios.get(url).catch(async function (error) {
+		let response = await axios.get(url).catch(async function (error) {
 			if (error.response.status == 503)
 				console.error(
 					moment().format("LTS") +
@@ -34,11 +34,11 @@ export default async function costco(url, interval) {
 			else writeErrorToFile(store, error);
 		});
 
-		if (res && res.status === 200) {
+		if (response && response.status === 200) {
 			let parser = new DomParser();
-			let doc = parser.parseFromString(res.data, "text/html");
-			let title = doc.getElementsByTagName("title")[0].innerHTML.trim().slice(0, 150);
-			let inventory = doc.getElementById("add-to-cart-btn").getAttribute("value");
+			let document = parser.parseFromString(response.data, "text/html");
+			let title = document.getElementsByTagName("title")[0].innerHTML.trim().slice(0, 150);
+			let inventory = document.getElementById("add-to-cart-btn").getAttribute("value");
 			let image = "https://www.thermaxglobal.com/wp-content/uploads/2020/05/image-not-found.jpg";
 
 			if (inventory == "Out of Stock" && !firstRun.has(url)) {

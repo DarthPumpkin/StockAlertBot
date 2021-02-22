@@ -3,14 +3,20 @@ import fs from "fs";
 import util from "util";
 import moment from "moment";
 
-const dir = "logs/";
+const directory = "logs/";
 
 export default async function writeErrorToFile(name, error, html = undefined, status = undefined) {
-	fs.writeFile(dir + name + ".log", util.inspect(error), function (e, result) {
-		if (e) console.error("File write error:", e);
+	fs.writeFile(directory + name + ".log", util.inspect(error), function (error, result) {
+		if (error) console.error("File write error:", error);
 	});
 	console.error(
-		moment().format("LTS") + ": Unhandled error for " + name + ". Written to " + dir + name + ".log"
+		moment().format("LTS") +
+			": Unhandled error for " +
+			name +
+			". Written to " +
+			directory +
+			name +
+			".log"
 	);
 	let message =
 		"This is usually not a problem but if this error appears frequently, please report the error (and the log) to GitHub.";
@@ -20,12 +26,16 @@ export default async function writeErrorToFile(name, error, html = undefined, st
 			"\nHTML written for " +
 			name +
 			" to " +
-			dir +
+			directory +
 			name +
 			"ErrorPage.html. Please report this bug to GitHub and upload this file";
-		fs.writeFile(dir + name + "ErrorPage.html", html + "\n" + status, function (e, result) {
-			if (e) console.error("File write error:", e);
-		});
+		fs.writeFile(
+			directory + name + "ErrorPage.html",
+			html + "\n" + status,
+			function (error, result) {
+				if (error) console.error("File write error:", error);
+			}
+		);
 	}
 
 	console.error(message);

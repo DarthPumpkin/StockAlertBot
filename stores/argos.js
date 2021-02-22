@@ -22,7 +22,7 @@ let firstRun = new Set();
 let urlOpened = false;
 export default async function argos(url, interval) {
 	try {
-		let res = await axios.get(url).catch(async function (error) {
+		let response = await axios.get(url).catch(async function (error) {
 			if (error.response.status == 503)
 				console.error(
 					moment().format("LTS") +
@@ -33,16 +33,16 @@ export default async function argos(url, interval) {
 			else writeErrorToFile(store, error);
 		});
 
-		if (res && res.status == 200) {
+		if (response && response.status == 200) {
 			let parser = new DomParser();
-			let doc = parser.parseFromString(res.data, "text/html");
-			let title = doc.getElementsByClassName("Namestyles__Main-sc-269llv-1");
-			let inventory = doc.getElementsByClassName("xs-8--none");
-			let image = doc.getElementsByClassName("MediaGallerystyles__ImageWrapper-sc-1jwueuh-2");
+			let document = parser.parseFromString(response.data, "text/html");
+			let title = document.getElementsByClassName("Namestyles__Main-sc-269llv-1");
+			let inventory = document.getElementsByClassName("xs-8--none");
+			let image = document.getElementsByClassName("MediaGallerystyles__ImageWrapper-sc-1jwueuh-2");
 
 			if (title.length > 0) title = title[0].firstChild.textContent.trim().slice(0, 150);
 			else {
-				title = doc.getElementById("h1title").textContent;
+				title = document.getElementById("h1title").textContent;
 				title = title.replace("Sorry, ", "");
 				title = title.replace(" is currently unavailable.", "");
 			}

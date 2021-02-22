@@ -23,7 +23,7 @@ const store = "Gamestop";
 let firstRun = new Set(); // Used to show initial message, once for each product, that product isn't available but will keep checking in the background
 let urlOpened = false;
 export default async function gamestop(url, interval) {
-	let res = undefined,
+	let response = undefined,
 		html = undefined,
 		proxy = undefined;
 
@@ -46,21 +46,21 @@ export default async function gamestop(url, interval) {
 			};
 
 		// Get Page
-		res = await axios.get(url, options).catch(async function (error) {
+		response = await axios.get(url, options).catch(async function (error) {
 			writeErrorToFile(store, error);
 		});
 
 		// Extract Information
-		if (res && res.status == 200) {
-			html = res.data;
+		if (response && response.status == 200) {
+			html = response.data;
 
 			let parser = new DomParser();
-			let doc = parser.parseFromString(html, "text/html");
-			let productInfo = doc.getElementsByTagName("script");
-			let title = doc.getElementsByClassName("product-name");
+			let document = parser.parseFromString(html, "text/html");
+			let productInfo = document.getElementsByTagName("script");
+			let title = document.getElementsByClassName("product-name");
 			let inventory = undefined,
 				productId = undefined;
-			let image = doc.getElementsByClassName("product-main-image-gallery");
+			let image = document.getElementsByClassName("product-main-image-gallery");
 
 			if (productInfo.length > 0) {
 				productInfo = productInfo.filter((script) =>
@@ -113,6 +113,6 @@ export default async function gamestop(url, interval) {
 			}
 		}
 	} catch (error) {
-		writeErrorToFile(store, error, html, res.status);
+		writeErrorToFile(store, error, html, response.status);
 	}
 }

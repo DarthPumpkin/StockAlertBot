@@ -60,18 +60,18 @@ function getDomainName(url) {
 }
 
 // Calls the given store function with the set interval
-async function checkStore(storeFunc, url) {
+async function checkStore(storeFunction, url) {
 	switch (INTERVAL.unit) {
 		case "seconds":
-			setInterval(storeFunc, INTERVAL.value * 1000, url, INTERVAL);
+			setInterval(storeFunction, INTERVAL.value * 1000, url, INTERVAL);
 			break;
 
 		case "minutes":
-			setInterval(storeFunc, INTERVAL.value * 1000 * 60, url, INTERVAL);
+			setInterval(storeFunction, INTERVAL.value * 1000 * 60, url, INTERVAL);
 			break;
 
 		case "hours":
-			setInterval(storeFunc, INTERVAL.value * 1000 * 60 * 60, url, INTERVAL);
+			setInterval(storeFunction, INTERVAL.value * 1000 * 60 * 60, url, INTERVAL);
 			break;
 	}
 }
@@ -183,18 +183,18 @@ function main() {
 	}
 
 	if (amazonItems.length > 0)
-		for (const [idx, item] of amazonItems.entries()) {
+		for (const [index, item] of amazonItems.entries()) {
 			switch (INTERVAL.unit) {
 				case "seconds":
-					setTimeout(checkStoreWithDelay, AMAZON_DELAY * 1000 * idx, item);
+					setTimeout(checkStoreWithDelay, AMAZON_DELAY * 1000 * index, item);
 					break;
 
 				case "minutes":
-					setTimeout(checkStoreWithDelay, AMAZON_DELAY * 1000 * 60 * idx, item);
+					setTimeout(checkStoreWithDelay, AMAZON_DELAY * 1000 * 60 * index, item);
 					break;
 
 				case "hours":
-					setTimeout(checkStoreWithDelay, AMAZON_DELAY * 1000 * 60 * 60 * idx, item);
+					setTimeout(checkStoreWithDelay, AMAZON_DELAY * 1000 * 60 * 60 * index, item);
 					break;
 			}
 		}

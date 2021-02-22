@@ -23,7 +23,7 @@ const store = "Currys";
 let firstRun = new Set();
 let urlOpened = false;
 export default async function currys(url, interval) {
-	let res = undefined,
+	let response = undefined,
 		html = undefined,
 		proxy = undefined;
 
@@ -46,25 +46,25 @@ export default async function currys(url, interval) {
 			};
 
 		// Get Page
-		res = await axios.get(url, options).catch(async function (error) {
+		response = await axios.get(url, options).catch(async function (error) {
 			writeErrorToFile(store, error);
 		});
 
 		// Extract Information
-		if (res && res.status == 200) {
-			html = res.data;
+		if (response && response.status == 200) {
+			html = response.data;
 
 			let parser = new DomParser();
-			let doc = parser.parseFromString(html, "text/html");
-			let title = doc.getElementsByClassName("product_name");
-			let inventory = doc.getElementsByClassName("space-b center");
-			let image = doc
+			let document = parser.parseFromString(html, "text/html");
+			let title = document.getElementsByClassName("product_name");
+			let inventory = document.getElementsByClassName("space-b center");
+			let image = document
 				.getElementsByTagName("meta")
 				.filter((meta) => meta.getAttribute("property") == "og:image");
 
 			if (title.length > 0) title = title[0].textContent;
 			else {
-				title = doc
+				title = document
 					.getElementsByTagName("meta")
 					.filter((meta) => meta.getAttribute("property") == "og:title");
 				if (title.length > 0) title = title[0].getAttribute("content");
@@ -101,6 +101,6 @@ export default async function currys(url, interval) {
 			}
 		}
 	} catch (error) {
-		writeErrorToFile(store, error, html, res.status);
+		writeErrorToFile(store, error, html, response.status);
 	}
 }
