@@ -1,0 +1,4 @@
+# Ignore this files and folders when using ESLint
+node_modules/
+logs/
+README.md

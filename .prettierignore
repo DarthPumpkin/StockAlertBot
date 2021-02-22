@@ -1,0 +1,5 @@
+# Ignore this files and folders when using Prettier
+node_modules/
+logs/
+README.md
+package-lock.json
