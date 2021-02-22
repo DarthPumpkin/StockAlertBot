@@ -6,8 +6,6 @@
     },
     "extends": [
         "eslint:recommended",
-        "prettier",
-        "plugin:unicorn/recommended",
         "plugin:prettier/recommended"
     ],
     "plugins": ["prettier", "unicorn"],
@@ -39,7 +37,6 @@
         "unicorn/no-null": "error",
         "unicorn/no-object-as-default-parameter": "error",
         "unicorn/no-process-exit": "error",
-        "unicorn/no-static-only-class": "error",
         "unicorn/no-this-assignment": "error",
         "unicorn/no-unsafe-regex": "off",
         "unicorn/no-zero-fractions": "error",
