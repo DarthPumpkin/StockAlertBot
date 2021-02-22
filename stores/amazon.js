@@ -2,7 +2,7 @@ import { fileURLToPath } from "url";
 import { ALARM, PROXIES, PROXY_LIST, OPEN_URL, USER_AGENTS } from "../main.js";
 import threeBeeps from "../utils/notification/beep.js";
 import sendAlerts from "../utils/notification/alerts.js";
-import writeErrorToFile from "../utils/writeToFile.js";
+import writeErrorToFile from "../utils/log-error.js";
 import open from "open";
 import axios from "axios";
 import moment from "moment";
@@ -16,7 +16,7 @@ if (process.argv[1] === fileURLToPath(import.meta.url)) {
 	};
 	let url =
 		"https://www.amazon.com/Coredy-Super-Strong-Automatic-Self-Charging-Medium-Pile/dp/B07NPNN57S";
-	amazon(url, interval, interval.value, true, false, () => null);
+	amazon(url, interval, interval.value, true, false, () => undefined);
 }
 
 const store = "Amazon";
@@ -29,12 +29,12 @@ export default async function amazon(
 	urlOpened,
 	resolve
 ) {
-	let res = null,
-		html = null,
-		proxy = null;
+	let res = undefined,
+		html = undefined,
+		proxy = undefined;
 
 	try {
-		let options = null;
+		let options = undefined;
 
 		// Setup proxies
 		if (PROXIES && PROXY_LIST.length > 0) {

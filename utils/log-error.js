@@ -5,7 +5,7 @@ import moment from "moment";
 
 const dir = "logs/";
 
-export default async function writeErrorToFile(name, error, html = null, status = null) {
+export default async function writeErrorToFile(name, error, html = undefined, status = undefined) {
 	fs.writeFile(dir + name + ".log", util.inspect(error), function (e, result) {
 		if (e) console.error("File write error:", e);
 	});

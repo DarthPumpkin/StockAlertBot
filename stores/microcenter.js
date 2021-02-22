@@ -2,7 +2,7 @@ import { fileURLToPath } from "url";
 import { ALARM, PROXIES, PROXY_LIST, OPEN_URL, USER_AGENTS } from "../main.js";
 import threeBeeps from "../utils/notification/beep.js";
 import sendAlerts from "../utils/notification/alerts.js";
-import writeErrorToFile from "../utils/writeToFile.js";
+import writeErrorToFile from "../utils/log-error.js";
 import open from "open";
 import axios from "axios";
 import moment from "moment";
@@ -24,14 +24,14 @@ const store = "Microcenter";
 let firstRun = new Set();
 let urlOpened = false;
 export default async function microcenter(url, interval) {
-	let res = null,
-		html = null,
-		proxy = null;
+	let res = undefined,
+		html = undefined,
+		proxy = undefined;
 
 	let productID = url.match(/(?<=product\/).*(?=\/)/i)[0];
 
 	try {
-		let options = null;
+		let options = undefined;
 
 		// Setup proxies
 		if (PROXIES && PROXY_LIST.length > 0) {

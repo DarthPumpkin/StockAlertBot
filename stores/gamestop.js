@@ -2,7 +2,7 @@ import { fileURLToPath } from "url";
 import { ALARM, PROXIES, PROXY_LIST, OPEN_URL, USER_AGENTS } from "../main.js";
 import threeBeeps from "../utils/notification/beep.js";
 import sendAlerts from "../utils/notification/alerts.js";
-import writeErrorToFile from "../utils/writeToFile.js";
+import writeErrorToFile from "../utils/log-error.js";
 import open from "open";
 import axios from "axios";
 import moment from "moment";
@@ -23,12 +23,12 @@ const store = "Gamestop";
 let firstRun = new Set(); // Used to show initial message, once for each product, that product isn't available but will keep checking in the background
 let urlOpened = false;
 export default async function gamestop(url, interval) {
-	let res = null,
-		html = null,
-		proxy = null;
+	let res = undefined,
+		html = undefined,
+		proxy = undefined;
 
 	try {
-		let options = null;
+		let options = undefined;
 
 		// Setup proxies
 		if (PROXIES && PROXY_LIST.length > 0) {
@@ -58,8 +58,8 @@ export default async function gamestop(url, interval) {
 			let doc = parser.parseFromString(html, "text/html");
 			let productInfo = doc.getElementsByTagName("script");
 			let title = doc.getElementsByClassName("product-name");
-			let inventory = null,
-				productId = null;
+			let inventory = undefined,
+				productId = undefined;
 			let image = doc.getElementsByClassName("product-main-image-gallery");
 
 			if (productInfo.length > 0) {
@@ -67,7 +67,7 @@ export default async function gamestop(url, interval) {
 					script.textContent.includes("dataLayer = window.dataLayer || [];")
 				);
 				productInfo = productInfo[1].textContent;
-				productInfo = productInfo.substring(
+				productInfo = productInfo.slice(
 					productInfo.indexOf("dataLayer.concat(") + 17,
 					productInfo.indexOf(");")
 				);

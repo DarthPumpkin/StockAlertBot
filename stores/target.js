@@ -10,7 +10,7 @@ import {
 } from "../main.js";
 import threeBeeps from "../utils/notification/beep.js";
 import sendAlerts from "../utils/notification/alerts.js";
-import writeErrorToFile from "../utils/writeToFile.js";
+import writeErrorToFile from "../utils/log-error.js";
 import open from "open";
 import axios from "axios";
 import moment from "moment";
@@ -32,15 +32,15 @@ const store = "Target";
 let firstRun = new Set();
 let urlOpened = false;
 export default async function target(url, interval, key, zip_code) {
-	let res = null,
-		html = null,
-		proxy = null;
+	let res = undefined,
+		html = undefined,
+		proxy = undefined;
 
 	key = key || TARGET_KEY;
 	zip_code = zip_code || TARGET_ZIP_CODE;
 
 	try {
-		let options = null;
+		let options = undefined;
 
 		// Setup proxies
 		if (PROXIES && PROXY_LIST.length > 0) {
@@ -158,7 +158,7 @@ export default async function target(url, interval, key, zip_code) {
 			}
 		} else {
 			console.info(
-				moment().format("LTS") + ": Error occured checking " + title + ". Retrying in",
+				moment().format("LTS") + ": Error occured checking " + store + ". Retrying in",
 				interval.value,
 				interval.unit
 			);

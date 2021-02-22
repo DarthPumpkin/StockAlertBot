@@ -1,5 +1,7 @@
 # Ignore this files and folders when using Prettier
 node_modules/
 logs/
+stores/html/
+stores/logs/
 README.md
 package-lock.json

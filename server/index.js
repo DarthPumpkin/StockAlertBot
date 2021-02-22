@@ -92,7 +92,7 @@ function getSettings(req, res) {
 app.post("/config", postSettings);
 function postSettings(req, res) {
 	console.log("Settings received! Saving to config.json...");
-	let settings = JSON.stringify(req.body, null, 4);
+	let settings = JSON.stringify(req.body, undefined, 4);
 
 	fs.writeFile("config.json", settings, "utf8", function (err) {
 		if (err) {

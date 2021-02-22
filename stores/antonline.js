@@ -2,7 +2,7 @@ import { fileURLToPath } from "url";
 import { ALARM, PROXIES, PROXY_LIST, OPEN_URL, USER_AGENTS } from "../main.js";
 import threeBeeps from "../utils/notification/beep.js";
 import sendAlerts from "../utils/notification/alerts.js";
-import writeErrorToFile from "../utils/writeToFile.js";
+import writeErrorToFile from "../utils/log-error.js";
 import open from "open";
 import axios from "axios";
 import moment from "moment";
@@ -22,12 +22,12 @@ const store = "Ant Online";
 let firstRun = new Set();
 let urlOpened = false;
 export default async function antonline(url, interval) {
-	let res = null,
-		html = null,
-		proxy = null;
+	let res = undefined,
+		html = undefined,
+		proxy = undefined;
 
 	try {
-		let options = null;
+		let options = undefined;
 
 		// Setup proxies
 		if (PROXIES && PROXY_LIST.length > 0) {
@@ -66,7 +66,7 @@ export default async function antonline(url, interval) {
 				image = image[0].getAttribute("src");
 			} else {
 				image = doc.getElementsByClassName("main_img");
-				image = image.length > 0 ? image[0].getAttribute("src").replace("45", "500") : null;
+				image = image.length > 0 ? image[0].getAttribute("src").replace("45", "500") : undefined;
 			}
 			if (inventory && inventory.length > 0) inventory = inventory[0].textContent;
 
