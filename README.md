@@ -194,6 +194,13 @@ To provide monetary support, [donate](https://www.paypal.com/donate?business=3Y9
 ## Main Technologies
 - [Node.js](https://nodejs.org/) with [Express.js](https://expressjs.com/)
 - [Vue.js](https://vuejs.org/) powered by [Vuetify](https://vuetifyjs.com/) and [Material Design Icons](https://materialdesignicons.com/)
+- [ESLint](https://eslint.org/) with [Prettier](https://prettier.io/) and [Unicorn](https://github.com/sindresorhus/eslint-plugin-unicorn) plugin
+- [AWS SDK](https://aws.amazon.com/sdk-for-javascript/)
+- [Axios](https://github.com/axios/axios)
+- [Dotenv](https://github.com/motdotla/dotenv)
+- [Moment](https://momentjs.com/)
+- [Nodemailer](https://nodemailer.com/)
+- [Twilio](https://github.com/twilio/twilio-node)
 
 
 ## License
