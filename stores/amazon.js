@@ -105,6 +105,10 @@ export default async function amazon(url, interval, originalIntervalValue, first
         else resolve({interval: interval.value, urlOpened: urlOpened})
 
     } catch (e) {
-        writeErrorToFile(store, e, html, res.status)
+        if (res) {
+            writeErrorToFile(store, e, html, res.status)
+        } else {
+            console.error("res was null")
+        }
     }
 };
