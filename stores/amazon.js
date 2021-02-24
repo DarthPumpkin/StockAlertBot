@@ -76,7 +76,7 @@ export default async function amazon(url, interval, originalIntervalValue, first
                 }
                 else message += 'Consider using proxies or lowering interval.'
                 console.error(message)
-                resolve({interval: Math.floor(interval.value + Math.random() * originalIntervalValue), urlOpened: urlOpened})
+                resolve({interval: interval.value, urlOpened: urlOpened})
                 return
             }
 
@@ -102,7 +102,7 @@ export default async function amazon(url, interval, originalIntervalValue, first
             }
             resolve({interval: interval.value, urlOpened: urlOpened});
         }
-        else resolve({interval: Math.floor(interval.value + Math.random() * originalIntervalValue), urlOpened: urlOpened})
+        else resolve({interval: interval.value, urlOpened: urlOpened})
 
     } catch (e) {
         writeErrorToFile(store, e, html, res.status)
